@@ -121,8 +121,8 @@ int main()
         auto sched = scheduler{scheduler_schedule_called,
             scheduler_execute_called, tag_invoke_overload_called};
         auto s = ex::transfer_when_all(sched, error_typed_sender<double>{});
-        auto r = error_callback_receiver<decltype(check_exception_ptr)>{
-            check_exception_ptr, set_error_called};
+        auto r = error_callback_receiver<check_exception_ptr>{
+            check_exception_ptr{}, set_error_called};
         auto os = ex::connect(std::move(s), std::move(r));
         ex::start(os);
 
