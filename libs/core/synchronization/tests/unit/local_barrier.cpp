@@ -25,7 +25,7 @@ using hpx::threads::make_thread_function_nullary;
 using hpx::threads::register_work;
 using hpx::threads::thread_init_data;
 
-using hpx::lcos::local::barrier;
+using hpx::barrier;
 
 using hpx::local::finalize;
 using hpx::local::init;
@@ -33,11 +33,11 @@ using hpx::local::init;
 using hpx::util::report_errors;
 
 ///////////////////////////////////////////////////////////////////////////////
-void local_barrier_test(barrier& b, std::atomic<std::size_t>& c)
+void local_barrier_test(barrier<>& b, std::atomic<std::size_t>& c)
 {
     ++c;
     // wait for all threads to enter the barrier
-    b.wait();
+    b.arrive_and_wait();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,8 @@ int hpx_main(variables_map& vm)
             register_work(data);
         }
 
-        b.wait();    // wait for all threads to enter the barrier
+        // wait for all threads to enter the barrier
+        b.arrive_and_wait();
         HPX_TEST_EQ(pxthreads, c);
     }
 
