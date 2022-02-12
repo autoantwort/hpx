@@ -97,7 +97,7 @@ namespace hpx::execution::experimental {
                         typename OperationState::value_types_storage_type>()
                         .template get<OperationState::i_storage_offset + Is>()
                         .emplace(HPX_FORWARD(Ts, ts)),
-                    ...))
+                    ...), void())
             {
                 // op_state.ts holds values from all predecessor senders. We
                 // emplace the values using the offset calculated while
@@ -161,7 +161,7 @@ namespace hpx::execution::experimental {
         template <typename OperationState, typename... Ts>
         auto tag_invoke(set_value_t, when_all_receiver<OperationState>&& r,
             Ts&&... ts) noexcept
-            -> decltype(r.set_value(HPX_FORWARD(Ts, ts)...))
+            -> decltype(r.set_value(HPX_FORWARD(Ts, ts)...), void())
         {
             r.set_value(HPX_FORWARD(Ts, ts)...);
         }
